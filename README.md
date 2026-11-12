@@ -1,18 +1,17 @@
 # Practica-haskell
 # Practica 1 - Numeros naturales y recursion
 
-**Autor:** Alexa Dorantes Torres, Diego Saul Petrovich Tovar y Melissa Prado Hern ndez
+**Autor:** Alexa Dorantes Torres, Diego Saul Petrovich Tovar y Melissa Prado Hernandez
 **Materia:** Estructuras Discretas, Facultad de Ciencias, UNAM
 **Lenguaje:** Haskell
 
-## Descripcion general
+## Descripcion
 
 Esta practica tiene tres partes: naturales de Peano, recursion y arboles. En cada una programe funciones en Haskell usando recursion.
 
 ## Requisitos
 
 - Tener instalado GHC (el compilador de Haskell), que incluye `ghci`.
-- Tener los tres archivos `.hs` en la misma carpeta.
 
 ## Como ejecutar cualquier parte
 
@@ -32,15 +31,6 @@ ghci NombreDelArchivo.hs
 4. Si cambio algo en el archivo, lo recargo con `:r` sin cerrar ghci.
 5. Para salir escribo `:q`.
 
-## Idea general: recursion
-
-En todas las funciones uso el mismo esquema:
-
-1. Un caso base, que se resuelve directamente.
-2. Un caso recursivo, donde la funcion se llama a si misma con un problema mas pequeno.
-
-Como cada llamada se acerca al caso base, la recursion siempre termina.
-
 ---
 
 ## Parte 1: Naturales de Peano
@@ -49,7 +39,7 @@ Como cada llamada se acerca al caso base, la recursion siempre termina.
 
 ### Que hace
 
-Defini los numeros naturales como los define Peano: solo con un primer elemento, el cero, y una funcion que da el siguiente numero, llamada sucesor. Con esa estructura programe cuatro funciones: pasar de entero a natural, pasar de natural a entero, sumar y multiplicar.
+Define los numeros naturales como los define Peano: solo con un primer elemento, el cero, y una funcion que da el siguiente numero, llamada sucesor. Con esa estructura programe cuatro funciones: pasar de entero a natural, pasar de natural a entero, sumar y multiplicar.
 
 ### La estructura de datos
 
@@ -62,7 +52,7 @@ Un `Natural` puede tener solo dos formas:
 - `Cero`, que es el numero 0.
 - `S n`, que es el sucesor de `n`, es decir, `n + 1`.
 
-Por ejemplo, el 3 se escribe `S (S (S Cero))`. Lo pienso como contar con palitos: el valor es la cantidad de `S` que hay antes del `Cero`. El `deriving Show` sirve para que Haskell pueda imprimir los valores.
+Por ejemplo, el 3 se escribe `S (S (S Cero))`. El `deriving Show` sirve para que Haskell pueda imprimir los valores.
 
 ### Funciones
 
@@ -143,7 +133,7 @@ La ultima prueba convierte un entero a natural y de regreso, y debe devolver el 
 
 ### Que hace
 
-En esta parte programe seis funciones recursivas sobre enteros (`Int`) y listas: Fibonacci, multiplicacion, potencia, factorial, division con residuo y maximo de una lista. En todas escribi primero el caso base y despues el caso recursivo, que reduce el problema a uno mas pequeno.
+En esta parte son seis funciones recursivas sobre enteros (`Int`) y listas: Fibonacci, multiplicacion, potencia, factorial, division con residuo y maximo de una lista, primero el caso base y despues el caso recursivo, que reduce el problema a uno mas pequeno.
 
 ### Funciones
 
@@ -257,7 +247,7 @@ ghci> maximo [3,2,5,6,1,1]
 
 ### Que hace
 
-En esta parte defini un arbol binario en Haskell y programe dos funciones sobre el: una que cuenta cuantos nodos tiene y otra que calcula su profundidad.
+En esta parte define un arbol binario en Haskell y hay dos funciones sobre el: una que cuenta cuantos nodos tiene y otra que calcula su profundidad.
 
 ### La estructura de datos
 
@@ -271,7 +261,7 @@ Un `ArbolB a` puede tener solo dos formas:
 - `Vacio`, que es el arbol sin nada.
 - `Nodo x i d`, que es un nodo con un valor `x` y dos hijos: `i` (izquierdo) y `d` (derecho). Los hijos tambien son arboles.
 
-La definicion es recursiva: un arbol se arma con arboles mas pequenos. Lo pienso como una caja que guarda un dato y dos cajas mas, que pueden estar vacias.
+La definicion es recursiva: un arbol se arma con arboles mas pequenos.
 
 La `a` significa que el arbol puede guardar cualquier tipo de dato (numeros, cadenas, etc.). El `deriving (Eq, Show)` permite comparar arboles con `==` e imprimirlos. Por ejemplo, `Nodo "t1" Vacio Vacio` es un arbol de un solo nodo y sin hijos.
 
@@ -279,7 +269,7 @@ El archivo tambien tiene `type Arbin a = ArbolB a`, que es solo otro nombre para
 
 ### Funciones
 
-En las dos funciones escribi un caso para cada forma del arbol: `Vacio` es el caso base y `Nodo` es el caso recursivo, donde llamo a la funcion con el hijo izquierdo y con el derecho. Como los hijos son mas pequenos que el arbol completo, la recursion termina.
+En las dos funciones un caso para cada forma del arbol: `Vacio` es el caso base y `Nodo` es el caso recursivo, donde llamo a la funcion con el hijo izquierdo y con el derecho. Como los hijos son mas pequenos que el arbol completo, la recursion termina.
 
 **num_elementos** cuenta los nodos del arbol. Un arbol vacio tiene 0 nodos. Un `Nodo` cuenta como 1, mas los nodos del hijo izquierdo, mas los del derecho. El valor que guarda el nodo no importa, por eso lo escribi como `_`.
 

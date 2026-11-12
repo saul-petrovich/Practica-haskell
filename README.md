@@ -130,3 +130,120 @@ ghci> a_entero (a_natural 3)
 ```
 
 La ultima prueba convierte un entero a natural y de regreso, y debe devolver el mismo numero.
+
+
+
+
+
+---
+
+## Parte 2: Recursion
+
+**Archivo:** `Recursion.hs`
+
+### Que hace
+
+En esta parte programe seis funciones recursivas sobre enteros (`Int`) y listas: Fibonacci, multiplicacion, potencia, factorial, division con residuo y maximo de una lista. En todas escribi primero el caso base y despues el caso recursivo, que reduce el problema a uno mas pequeno.
+
+### Funciones
+
+**fibo** regresa el numero de Fibonacci de un entero. Cada numero es la suma de los dos anteriores, por eso necesito dos casos base: 0 y 1.
+
+```haskell
+fibo :: Int -> Int
+fibo 0 = 0
+fibo 1 = 1
+fibo n = fibo (n - 1) + fibo (n - 2)
+```
+
+Con el 4: `fibo 4 = fibo 3 + fibo 2 = 2 + 1 = 3`. Es lenta con numeros grandes porque repite calculos.
+
+**a_multiplicacion** multiplica dos enteros sin usar `*` para la recursion. Me base en que n * 0 = 0 y en que n * (m + 1) = n + n * m. Es decir, multiplicar es sumar `n` un total de `m` veces.
+
+```haskell
+a_multiplicacion :: Int -> Int -> Int
+a_multiplicacion _ 0 = 0
+a_multiplicacion n m = n + a_multiplicacion n (m - 1)
+```
+
+Con 3 * 2: `3 + (3 + 0) = 6`.
+
+**a_potencia** eleva `n` a la `m`. Me base en que n^0 = 1 y en que n^(m + 1) = n * n^m. El 1 es el neutro de la multiplicacion, por eso es el caso base.
+
+```haskell
+a_potencia :: Int -> Int -> Int
+a_potencia _ 0 = 1
+a_potencia n m = n * a_potencia n (m - 1)
+```
+
+Con 2^3: `2 * (2 * (2 * 1)) = 8`.
+
+**a_factorial** calcula n!. Me base en que 0! = 1 y en que (n + 1)! = n! * (n + 1), escrito con `n` en lugar de `n + 1`.
+
+```haskell
+a_factorial :: Int -> Int
+a_factorial 0 = 1
+a_factorial n = n * a_factorial (n - 1)
+```
+
+Con 3!: `3 * (2 * (1 * 1)) = 6`.
+
+**divi** regresa un par con el cociente y el residuo. Si `a < b`, el cociente es 0 y el residuo es `a`. Si `a >= b`, le resto `b` una vez, divido lo que queda y le sumo 1 al cociente. Esa suma de 1 es la funcion f(x, r) = (x + 1, r) que pide el enunciado: el residuo no cambia. El `where` le da nombre al resultado de la llamada recursiva para poder usarlo.
+
+```haskell
+divi :: Int -> Int -> (Int, Int)
+divi a b
+  | a < b     = (0, a)
+  | otherwise = (c + 1, r)
+  where (c, r) = divi (a - b) b
+```
+
+Con 7 entre 2:
+
+```
+divi 1 2 = (0, 1)
+divi 3 2 = (1, 1)
+divi 5 2 = (2, 1)
+divi 7 2 = (3, 1)
+```
+
+Se comprueba porque 7 = 3 * 2 + 1. Si `b` es 0 no termina, porque restar 0 nunca se acerca al caso base.
+
+**maximo** regresa el valor mas grande de una lista. Si la lista tiene un solo elemento, ese es el maximo. Si no, separo la cabeza `x` del resto `xs` y el maximo es el mayor entre `x` y el maximo del resto.
+
+```haskell
+maximo :: [Int] -> Int
+maximo [x]    = x
+maximo (x:xs) = max x (maximo xs)
+```
+
+Con `[3,2,5,6,1,1]`:
+
+```
+max 3 (max 2 (max 5 (max 6 (max 1 1))))
+= max 3 (max 2 (max 5 (max 6 1)))
+= max 3 (max 2 (max 5 6))
+= max 3 (max 2 6)
+= max 3 6
+= 6
+```
+
+No esta definida para la lista vacia.
+
+### Pruebas
+
+```
+ghci Recursion.hs
+ghci> fibo 4
+3
+ghci> a_multiplicacion 3 4
+12
+ghci> a_potencia 2 3
+8
+ghci> a_factorial 5
+120
+ghci> divi 7 2
+(3,1)
+ghci> maximo [3,2,5,6,1,1]
+6
+```

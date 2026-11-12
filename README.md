@@ -1,7 +1,7 @@
 # Practica-haskell
 # Practica 1 - Numeros naturales y recursion
 
-**Autor:** Saul
+**Autor:** Alexa Dorantes Torres, Diego Saul Petrovich Tovar y Melissa Prado Hern ndez
 **Materia:** Estructuras Discretas, Facultad de Ciencias, UNAM
 **Lenguaje:** Haskell
 

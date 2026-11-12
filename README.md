@@ -247,3 +247,98 @@ ghci> divi 7 2
 ghci> maximo [3,2,5,6,1,1]
 6
 ```
+
+
+---
+
+## Parte 3: Arboles binarios
+
+**Archivo:** `Arboles.hs`
+
+### Que hace
+
+En esta parte defini un arbol binario en Haskell y programe dos funciones sobre el: una que cuenta cuantos nodos tiene y otra que calcula su profundidad.
+
+### La estructura de datos
+
+```haskell
+data ArbolB a = Vacio | Nodo a (ArbolB a) (ArbolB a)
+  deriving (Eq, Show)
+```
+
+Un `ArbolB a` puede tener solo dos formas:
+
+- `Vacio`, que es el arbol sin nada.
+- `Nodo x i d`, que es un nodo con un valor `x` y dos hijos: `i` (izquierdo) y `d` (derecho). Los hijos tambien son arboles.
+
+La definicion es recursiva: un arbol se arma con arboles mas pequenos. Lo pienso como una caja que guarda un dato y dos cajas mas, que pueden estar vacias.
+
+La `a` significa que el arbol puede guardar cualquier tipo de dato (numeros, cadenas, etc.). El `deriving (Eq, Show)` permite comparar arboles con `==` e imprimirlos. Por ejemplo, `Nodo "t1" Vacio Vacio` es un arbol de un solo nodo y sin hijos.
+
+El archivo tambien tiene `type Arbin a = ArbolB a`, que es solo otro nombre para el mismo tipo; no lo uso en las funciones.
+
+### Funciones
+
+En las dos funciones escribi un caso para cada forma del arbol: `Vacio` es el caso base y `Nodo` es el caso recursivo, donde llamo a la funcion con el hijo izquierdo y con el derecho. Como los hijos son mas pequenos que el arbol completo, la recursion termina.
+
+**num_elementos** cuenta los nodos del arbol. Un arbol vacio tiene 0 nodos. Un `Nodo` cuenta como 1, mas los nodos del hijo izquierdo, mas los del derecho. El valor que guarda el nodo no importa, por eso lo escribi como `_`.
+
+```haskell
+num_elementos :: ArbolB a -> Int
+num_elementos Vacio        = 0
+num_elementos (Nodo _ i d) = 1 + num_elementos i + num_elementos d
+```
+
+**depth** calcula la profundidad, que es el largo del camino mas largo desde la raiz hasta un `Vacio`. Un arbol vacio tiene profundidad 0. Un `Nodo` suma 1 (su propio nivel) a la profundidad del hijo mas profundo. Uso `max` porque me interesa el camino mas largo y no la suma de los dos lados.
+
+```haskell
+depth :: ArbolB a -> Int
+depth Vacio        = 0
+depth (Nodo _ i d) = 1 + max (depth i) (depth d)
+```
+
+### Ejemplo paso a paso
+
+Uso este arbol, que tiene el 1 en la raiz, el 2 como hijo izquierdo y nada como hijo derecho:
+
+```haskell
+Nodo 1 (Nodo 2 Vacio Vacio) Vacio
+```
+
+Numero de nodos:
+
+```
+num_elementos (Nodo 1 (Nodo 2 Vacio Vacio) Vacio)
+  = 1 + num_elementos (Nodo 2 Vacio Vacio) + num_elementos Vacio
+  = 1 + (1 + 0 + 0) + 0
+  = 2
+```
+
+Profundidad:
+
+```
+depth (Nodo 1 (Nodo 2 Vacio Vacio) Vacio)
+  = 1 + max (depth (Nodo 2 Vacio Vacio)) (depth Vacio)
+  = 1 + max (1 + max 0 0) 0
+  = 1 + max 1 0
+  = 2
+```
+
+### Pruebas
+
+El archivo ya trae un `main` con estas dos pruebas. Se puede compilar y correr asi:
+
+```
+ghc Arboles.hs
+./Arboles
+```
+
+Imprime `2` y `2`. Tambien se puede probar en `ghci`:
+
+```
+ghci Arboles.hs
+ghci> num_elementos (Nodo 1 (Nodo 2 Vacio Vacio) Vacio)
+2
+ghci> depth (Nodo 1 (Nodo 2 Vacio Vacio) Vacio)
+2
+```
